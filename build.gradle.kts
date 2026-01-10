@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.mrafonso"
-version = "1.1.9"
+version = "1.1.10"
 
 repositories {
     mavenCentral()
@@ -18,8 +18,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    implementation("com.github.retrooper:packetevents-spigot:2.9.3")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    implementation("com.github.retrooper:packetevents-spigot:2.11.1")
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
     compileOnly("com.github.simplix-softworks:simplixstorage:3.2.7")
@@ -35,7 +35,7 @@ tasks.build {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21.3")
+    minecraftVersion("1.21.11")
 }
 
 tasks.shadowJar {
