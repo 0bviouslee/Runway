@@ -49,12 +49,13 @@ public final class Runway extends JavaPlugin {
 
         EventManager manager = PacketEvents.getAPI().getEventManager();
         manager.registerListeners(new SystemChatListener(processHandler, configManager),
-                                  new TablistListener(processHandler, configManager),
-                                  new InventoryListener(processHandler, configManager),
-                                  new TitleListener(processHandler, configManager),
-                                  new ScoreboardListener(processHandler, configManager),
-                                  new ItemListener(processHandler, configManager)
-                                 );
+                          new TablistListener(processHandler, configManager),
+                          new InventoryListener(processHandler, configManager),
+                          new TitleListener(processHandler, configManager),
+                          new ScoreboardListener(processHandler, configManager),
+                          new ItemListener(processHandler, configManager),
+                          new DialogListener(processHandler, configManager)
+                         );
         PacketEvents.getAPI().init();
 
         commandManager = BukkitCommandManager.create(this);
