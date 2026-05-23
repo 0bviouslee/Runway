@@ -1,6 +1,13 @@
 package me.mrafonso.runway.util;
 
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
+import com.github.retrooper.packetevents.protocol.dialog.CommonDialogData;
+import com.github.retrooper.packetevents.protocol.dialog.ConfirmationDialog;
+import com.github.retrooper.packetevents.protocol.dialog.Dialog;
+import com.github.retrooper.packetevents.protocol.dialog.DialogListDialog;
+import com.github.retrooper.packetevents.protocol.dialog.MultiActionDialog;
+import com.github.retrooper.packetevents.protocol.dialog.NoticeDialog;
+import com.github.retrooper.packetevents.protocol.dialog.ServerLinksDialog;
 import de.leonhard.storage.Config;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
@@ -131,5 +138,45 @@ public class ProcessHandler {
             itemList.add(processItem(pItem, player));
         }
         return itemList;
+    }
+
+    public Dialog processDialog(@Nullable Dialog dialog, @Nullable Player player) {
+        if (dialog == null) return null;
+
+        CommonDialogData common;
+        if (dialog instanceof NoticeDialog d) common = d.getCommon();
+        else if (dialog instanceof ConfirmationDialog d) common = d.getCommon();
+        else if (dialog instanceof MultiActionDialog d) common = d.getCommon();
+        else if (dialog instanceof DialogListDialog d) common = d.getCommon();
+        else if (dialog instanceof ServerLinksDialog d) common = d.getCommon();
+        else return dialog;
+
+        net.kyori.adventure.text.Component newTitle = processComponent(common.getTitle(), player);
+        net.kyori.adventure.text.Component newExternalTitle = common.getExternalTitle() != null
+            ? processComponent(common.getExternalTitle(), player)
+            : null;
+
+        CommonDialogData newCommon = new CommonDialogData(
+            newTitle,
+            newExternalTitle,
+            common.isCanCloseWithEscape(),
+            common.isPause(),
+            common.getAfterAction(),
+            common.getBody(),
+            common.getInputs()
+        );
+
+        if (dialog instanceof NoticeDialog d)
+            return new NoticeDialog(newCommon, d.getAction());
+        if (dialog instanceof ConfirmationDialog d)
+            return new ConfirmationDialog(newCommon, d.getYesButton(), d.getNoButton());
+        if (dialog instanceof MultiActionDialog d)
+            return new MultiActionDialog(newCommon, d.getActions(), d.getExitAction(), d.getColumns());
+        if (dialog instanceof DialogListDialog d)
+            return new DialogListDialog(newCommon, d.getDialogs(), d.getExitAction(), d.getColumns(), d.getButtonWidth());
+        if (dialog instanceof ServerLinksDialog d)
+            return new ServerLinksDialog(newCommon, d.getExitAction(), d.getColumns(), d.getButtonWidth());
+
+        return dialog;
     }
 }
