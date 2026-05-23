@@ -34,4 +34,6 @@ listeners:
     items: true
   # Whether to parse items, including the item name and lore. (default: true)
   items: true
+  # Whether to parse dialog menus. (default: true)
+  dialogs: true
 
